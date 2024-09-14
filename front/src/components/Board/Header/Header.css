@@ -1,0 +1,407 @@
+/* Header.css */
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 20px;
+    background-color: lightslategray;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    outline: none;
+
+  }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+.modal-button {
+  padding: 12px 24px; /* 增加内边距使按钮更大 */
+  border: none;
+  border-radius: 8px; /* 增加圆角使按钮更圆润 */
+  background-color: #007bff; /* 保持蓝色背景 */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* 增加 transform 过渡效果 */
+  margin-right: 10px;
+  font-size: 16px; /* 增加字体大小 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 增加阴影效果 */
+}
+
+.modal-button:hover {
+  background-color: #0056b3; /* 改变背景颜色以实现悬停效果 */
+  transform: translateY(-2px); /* 悬停时稍微向上移动 */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* 增加悬停时的阴影效果 */
+}
+
+.modal-button:active {
+  transform: translateY(1px); /* 点击时稍微向下移动 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 减少点击时的阴影效果 */
+}
+
+
+.walletprofile{
+  display: flex; /* 启用Flexbox布局 */
+  flex-direction: row; /* 默认值，子元素横向排列 */
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 2px;
+  padding: 2px;
+
+}
+  .close-button {
+    background-color: #dc3545;
+  }
+
+  .close-button:hover {
+    background-color: #c82333;
+  }
+
+  .btnc{
+    background-color: transparent;
+    cursor: pointer;
+    color: white;
+    border: none;
+    font-size: 15px;
+    padding: 0px;
+    justify-self: end;
+  }
+
+  .btnc:hover{
+    font-weight: bold;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns:0fr 1fr 2fr 2fr 1fr;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .header-icon{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .social-links{
+    display: grid;
+    grid-template-rows: auto auto; /* 两行 */
+    grid-template-columns: 40% 60%; /* 两列 */
+    gap: 0px; /* 行列之间的间距 */
+  }
+  .social-links a, .user-actions a,.conn-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+
+  }
+  .social-links a:hover,.conn-links a:hover{
+    text-decoration: underline;
+  }
+  .conn-links a{
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    justify-self: end;
+  }
+  .conn-links a:hover{
+    cursor: pointer;
+  }
+  .conn-links{
+    display: grid;
+    grid-template-rows:auto;
+    justify-content: right;
+  }
+  .bump-bar {
+    border: 2px solid lightblue; /* 边框颜色改为蓝色 */
+    background-color: lightblue; /* 背景颜色改为蓝色 */
+    padding: 5px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    color: black; /* 文字颜色改为黑色 */
+    text-align: center; /* 文字居中 */
+    border-radius: 5px; /* 添加圆角 */
+}
+
+  .create-bar{
+    border: 2px solid lightblue; /* 边框颜色改为蓝色 */
+    background-color: lightblue; /* 背景颜色改为蓝色 */
+    padding: 5px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    color: black; /* 文字颜色改为黑色 */
+    text-align: center; /* 文字居中 */
+    border-radius: 5px; /* 添加圆角 */
+  }
+
+
+  .wallet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh; /* Make sure the container takes the full height of the viewport */
+  }
+
+  .wallet-list {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove default padding */
+  }
+
+  .wallet-item {
+    margin: 10px 0; /* Add spacing between items */
+  }
+
+  .wallet-button {
+    background-color: #61dafb;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .wallet-button:hover {
+    background-color: #21a1f1;
+  }
+
+  .wallet-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 161, 241, 0.5);
+  }
+.modal-profile{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    padding: 10px;
+    background-color: lightslategray;
+    border-radius: 10px;
+    border: solid white 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+  .profile-modal{
+    display: flex;
+    flex-direction: column; /* 默认值，子元素横向排列 */
+    justify-content: space-around;
+    align-items: center;
+    padding: px;
+    height: 230px;
+  }
+
+  .profile-info{
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+    justify-content: left;
+
+    width: 90%;
+    height: auto;
+    margin-top: px;
+  }
+  .profile-image{
+    width: 4rem;
+    height: 4rem  ;
+    border-radius: 9999px;
+    border: whitesmoke 1px solid;
+    margin: 10px 10px 10px 10px;
+  }
+
+  .profile-inner{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-inner div{
+    font-size: 16px;
+    margin-bottom: 10px ;
+    color: white;
+  }
+  .profile-inner a{
+    border: 1px solid whitesmoke;
+    border-radius: 4px ;
+    cursor: pointer;
+    padding: 4px;
+    width: 100px;
+    background-color: transparent;
+    color: white;
+  }
+  .profile-address {
+    display: flex;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 4px;
+    width: 85%;
+    height: 30px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    overflow-x: auto; /* 添加水平滚动条 */
+    white-space: nowrap; /* 防止文本换行 */
+  }
+
+  /* 定制滚动条 */
+  .profile-address::-webkit-scrollbar {
+    height: 3px; /* 调整滚动条的高度 */
+  }
+
+  .profile-address::-webkit-scrollbar-thumb {
+    background-color: white; /* 滚动条滑块的颜色 */
+    border-radius: 10px; /* 滚动条滑块的圆角 */
+  }
+
+  .profile-address::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* 滚动条滑块在悬停时的颜色 */
+  }
+  .profile-dis{
+    border: 1px solid white;
+    border-radius: 4px ;
+    width: 85%;
+    height: 40px;
+    cursor: pointer;
+    font-size: medium;
+  }
+  .profile-dis:hover{
+    background-color: lightblue ;
+  }
+  .profile-close{
+    border: transparent;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: medium;
+    color: white;
+  }
+
+  .modal-pro{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    padding: 10px;
+    background-color: lightslategray;
+    border-radius: 10px;
+    border: solid white 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    outline: none;
+  }
+
+    .pro{
+      display: flex;
+      flex-direction: column; /* 默认值，子元素横向排列 */
+      justify-content: space-around;
+      align-items: left;
+      margin-left: 20px;
+      height: 250px;
+      color: white;
+    }
+
+    .pro-photo{
+      display: flex;
+
+      width: 80%;
+      height: 64px;
+    }
+    .pro-photo img{
+      width: 4rem;
+      height: 4rem ;
+      border-radius: 9999px;
+      border: whitesmoke 1px solid;
+      margin-left: 20px;
+    }
+
+    .pro-user{
+      display: flex;
+
+      width: 95%;
+      height: 40px;
+      align-items: center;
+      padding-right: 20px;
+
+    }
+    .pro-user input{
+      margin-left: 20px;
+      width: 90%;
+      height: 70%;
+      border-radius: 4px;
+      border: 2px solid white;
+      background-color: transparent;
+    }
+
+    .pro-bio{
+      display: flex;
+
+      width: 95%;
+      height: 50px;
+      align-items: center;
+      padding-right: 20px;
+    }
+
+    .pro-bio input{
+      margin-left: 20px;
+      width: 90%;
+      height: 70%;
+      border-radius: 4px;
+      border: 2px solid white;
+      background-color: transparent;
+    }
+
+    .pro-button{
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .pro-button-close{
+      border: transparent;
+      cursor: pointer;
+      background-color: transparent;
+      font-size: large;
+      color: white;
+    }
+    .pro-button-save{
+      background-color:white;
+      font-size: large;
+      height: max-content;
+    }
+    .form-group-avatar{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .avatar-preview{
+      width: 4rem;
+      height: 4rem ;
+      border-radius: 9999px;
+      border: whitesmoke 1px solid;
+      margin-left: 20px;
+    }
+
+    .sds-connect-button-container {
+      button {
+        padding: 8px 16px !important;
+        border-radius: 8px !important;
+      }
+      div {
+        font-size: 16px !important;
+        line-height: 24px !important;
+        font-family: inherit !important;
+      }
+    }

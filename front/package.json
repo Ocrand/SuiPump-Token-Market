@@ -1,0 +1,63 @@
+{
+  "name": "react_typescript_demo_mosh",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@hookform/resolvers": "^3.6.0",
+    "@mysten/dapp-kit": "latest",
+    "@mysten/sui": "latest",
+    "@mysten/sui.js": "latest",
+    "@radix-ui/themes": "^3.1.3",
+    "@reduxjs/toolkit": "^2.2.5",
+    "@tanstack/react-query": "^5.45.1",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/redux-persist": "^4.3.1",
+    "@types/styled-components": "^5.1.34",
+    "axios": "^1.7.2",
+    "bignumber.js": "^9.1.2",
+    "bootstrap": "^5.3.0-alpha1",
+    "chart.js": "^4.4.3",
+    "chartjs-plugin-zoom": "^2.0.1",
+    "element-react": "^1.4.34",
+    "element-theme-default": "^1.4.13",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.52.0",
+    "react-icons": "^4.7.1",
+    "react-modal": "^3.16.1",
+    "react-redux": "^9.1.2",
+    "react-router-dom": "^6.23.1",
+    "redux-persist": "^6.0.0",
+    "rollup": "^4.18.0",
+    "styled-components": "^6.1.11",
+    "web3": "^4.10.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.2.22",
+    "@types/react-modal": "^3.16.3",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  },
+  "resolutions": {
+    "@mysten/sui": "1.2.1"
+  }
+}

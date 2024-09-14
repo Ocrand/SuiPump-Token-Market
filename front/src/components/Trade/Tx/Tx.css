@@ -1,0 +1,26 @@
+.tx-list {
+    margin-top: 15px;
+    width: 100%;
+  }
+  
+  .tx-header, .tx-item-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .tx-header {
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+  }
+  
+  .tx-header-item, .tx-item-content div {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .tx-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  

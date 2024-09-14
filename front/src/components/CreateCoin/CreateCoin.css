@@ -1,0 +1,67 @@
+.create-coin-form {
+    padding: 20px;
+    background-color: #1c1c1e;
+    color: white;
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    color: #61dafb;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .input-field,
+  .textarea-field,
+  .file-input {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    background-color: #2c2c2e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .textarea-field {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .more-options-button {
+    display: block;
+    margin: 10px 0;
+    background: none;
+    border: none;
+    color: #007aff;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background-color: #61dafb;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: green;
+    margin-top: 10px;
+  }
+  
+  .cost-info {
+    margin-top: 20px;
+    text-align: center;
+    color: #b0b0b0;
+  }

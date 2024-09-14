@@ -1,0 +1,106 @@
+/* Profile.css */
+
+.container-profile {
+    padding: 20px;
+    background-color: #1a1a1a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 垂直居中对齐 */
+    flex-direction: column;
+    /* min-height: 100vh; 确保容器占满整个视窗高度 */
+}
+
+.nav-tabs {
+    display: flex;
+    border-bottom: 1px solid #444;
+    justify-content: center; /* 居中导航按钮 */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.nav-link {
+    padding: 10px 20px;
+    margin: 0;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #fff;
+}
+
+.nav-link.active {
+    background-color: #33ff99;
+    color: #000;
+}
+
+
+/*.coin-row {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    margin-bottom: 20px;*/
+/*    justify-content: center; !* 居中每行 *!*/
+/*    width: 100%;*/
+/*}*/
+
+/*.coin-image img {*/
+/*    width: 50px;*/
+/*    height: 50px;*/
+/*    border-radius: 50%;*/
+/*}*/
+
+/*.coin-info {*/
+/*    flex: 1;*/
+/*    padding: 0 20px;*/
+/*    text-align: center; !* 居中对齐信息 *!*/
+/*}*/
+
+.coin-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center; /* 居中对齐按钮 */
+}
+
+.link-button {
+    border: none;
+    background: none;
+    color: #33ff99;
+    cursor: pointer;
+}
+
+
+.coin-header, .coin-row {
+    border-bottom: 1px solid #fff; /* Add bottom border */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* Four equal columns */
+    gap: 1rem; /* Space between columns */
+    align-items: center; /* Vertically center items */
+    text-align: center; /* Center text horizontally */
+    width: 100%;
+    height: 100%;
+
+}
+
+.coin-image img {
+    display: block;
+    margin: 0 auto; /* Center image horizontally */
+    width: 64px; /* Set image size */
+    height: 64px; /* Set image size */
+    border-radius: 50%; /* Round image */
+}
+
+.coin-row {
+    border-bottom: 1px solid #fff; /* Add bottom border */
+    padding: 10px 0; /* Add padding */
+    width: 100%;
+    height: auto;
+}
+.coin-Box {
+    width: 100%;
+    height: auto;
+    border: 1px solid #fff; /* Add white border around the box */
+}
+
+
+
+

@@ -1,0 +1,72 @@
+.terminal {
+    width: 100%;
+  }
+  
+.terminal .controls {
+display: flex;
+justify-content: space-around;
+margin-bottom: 20px;
+}
+
+.terminal .controls label {
+color: #61dafb;
+}
+
+.token-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+}
+
+.token-item {
+    
+    display: flex;
+    align-items: flex-start;
+    background-color: transparent;
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 400px;
+    max-height: 400px;
+}
+
+.token-item:hover{
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+
+.token-item img {
+    width: 128px;
+    height: 128px;
+    background-color: transparent;
+    margin-right: 10px;
+    flex-shrink: 0; /* Ensures the image does not shrink */
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 10px;
+    width: calc(100% - 138px); /* Adjust the width considering the image size and margin */
+    word-break: break-word;
+}
+
+.item-content div{
+    margin-bottom: 5px;
+}
+
+.item-des {
+    word-break: break-word;
+    font-weight: bold;
+    font-size: medium;
+    color: gainsboro;
+}
+
+
+
+    
