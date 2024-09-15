@@ -222,14 +222,13 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 		TranHash:     "", // Will be filled later
 		BoudingCurve: "", // Will be filled later
 	}
-	fmt.Println("reqData")
-	fmt.Println(reqData)
+	fmt.Println("reqData", reqData)
 	var ctx = context.Background()
 	var cli = sui.NewSuiClient("https://sui-testnet-rpc.publicnode.com")
-	// 输入你的主账户地址
-	MyCoinObject := "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+	// 你的coin对象
+	MyCoinObject := "xxxxxxxxxxxxxxx"
 	//录入主账户
-	MainAccount, err := signer.NewSignertWithMnemonic("xxxx")
+	MainAccount, err := signer.NewSignertWithMnemonic("xxxxxxxxxxxxxxxxxxxxxxxxxxx")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error creating main account: %v", err), http.StatusInternalServerError)
 		return
@@ -242,7 +241,7 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Error creating coin account: %v", err), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(CoinAccount)
+	fmt.Println("CoinAccount", CoinAccount)
 	//私钥解码
 	priKeyBytes, err := base64.StdEncoding.DecodeString(CoinAccount.PrivateKey)
 	if err != nil {
@@ -271,6 +270,7 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 	}
 	ActiveRsp, ActiveErr := cli.PaySui(ctx, ActiveSruct)
 	time.Sleep(4 * time.Second)
+	fmt.Println("ActiveRsp")
 	utils.PrettyPrint(ActiveRsp)
 	if ActiveErr != nil {
 		http.Error(w, fmt.Sprintf("Error pay account: %v", err), http.StatusInternalServerError)
@@ -287,6 +287,7 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 		},
 		RequestType: "WaitForLocalExecution",
 	})
+	fmt.Println("ActiveRsp2")
 	utils.PrettyPrint(ActiveRsp2)
 	if ActiveRspErr != nil {
 		http.Error(w, fmt.Sprintf("Error Active: %v", ActiveRspErr), http.StatusInternalServerError)
@@ -309,7 +310,7 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	time.Sleep(4 * time.Second)
-	GasRsp2, GasRspErr := cli.SignAndExecuteTransactionBlock(ctx, models.SignAndExecuteTransactionBlockRequest{
+	GasRsp2, _ := cli.SignAndExecuteTransactionBlock(ctx, models.SignAndExecuteTransactionBlockRequest{
 		TxnMetaData: GasRsp,
 		PriKey:      MainAccount.PriKey,
 		// 仅获取effects字段
@@ -320,10 +321,10 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 		RequestType: "WaitForLocalExecution",
 	})
 	utils.PrettyPrint(GasRsp2)
-	if GasRspErr != nil {
-		http.Error(w, fmt.Sprintf("Error Active: %v", GasRspErr), http.StatusInternalServerError)
-		return
-	}
+	//if GasRspErr != nil {
+	//	http.Error(w, fmt.Sprintf("Error Active: %v", GasRspErr), http.StatusInternalServerError)
+	//	return
+	//}
 	var SuiObjectId, GasObjectID string
 	if GasRsp2.Effects.Status.Status == "success" {
 		for _, obj1 := range ActiveRsp2.ObjectChanges {

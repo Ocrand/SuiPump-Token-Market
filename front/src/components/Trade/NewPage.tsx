@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "./NewPage.css";
 import { useParams } from "react-router-dom";
 import Header from "../Board/Header/Header.tsx";
@@ -12,9 +12,9 @@ import { RootState, closeModal, openModal } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import FileUploadWithIcon from "../Board/FileUploadWithIcon";
 import axiosInstance from "../../axiosInstance";
-import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend} from 'chart.js';
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
+import {Line} from "react-chartjs-2";
 
 // 注册插件
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -49,6 +49,11 @@ type SwapParsedJson = {
   token_type: string;
 };
 
+type tradeinfo = {
+  suibalance: number;
+  tokenbalance: number;
+  tokenprice: number;
+}
 
 
 const TradingApp: React.FC = () => {
@@ -63,9 +68,7 @@ const TradingApp: React.FC = () => {
   const [ticker, setTicker] = useState<string>("BABYT");
   const [currentAccount, setCurrentAccount] = useState("");
   // 代币实时信息
-  const [suiBalance, setSuiBalance] = useState<number | null>(null);
-  const [tokenBalance, setTokenBalance] = useState<number | null>(null);
-  const [tokenPrice, setTokenPrice] = useState<number | null>(null);
+  const [tradeInfo, setTradeInfo] = useState<tradeinfo | null>(null);
   const [priceHistory, setPriceHistory] = useState<{ time: string, price: number }[]>([]);
 
 
@@ -123,19 +126,15 @@ const TradingApp: React.FC = () => {
 
   useEffect(() => {
     if (tokenInfo) {
-      setPackageId(tokenInfo.package_id);
-      setBoundingCurve(tokenInfo.boudingcurve);
-      setTicker(tokenInfo.ticker);
-    }
-    console.log("tokenInfo:", tokenInfo);
-    if(boudingCurve!="0x46082b845dfa5d03348a6b675109843a380a6ecca2db130e6a869bf2cf2c3166") {
       const intervalId = setInterval(fetchObjectData, 5000); // 每1秒调用一次 fetchObjectData
 
       return () => clearInterval(intervalId); // 清理定时器
     }
+      // fetchObjectData();
+      console.log("tokenInfo:", tokenInfo);
+
+
   }, [tokenInfo]);
-
-
 
   const client = new SuiClient({
     url: getFullnodeUrl('testnet'),
@@ -161,24 +160,28 @@ const TradingApp: React.FC = () => {
         const fields = txn.data.content.fields;
         console.log(fields);
         if ('sui_balance' in fields && 'token_balance' in fields && 'virtual_sui_amt' in fields) {
-            // 更新状态
-            const Factor = 1_000_000_000;
-            const suiBalance = Number(fields.sui_balance) / Factor;
-            const tokenBalance = Number(fields.token_balance) / Factor;
-            const virtualSuiAmt = Number(fields.virtual_sui_amt) / Factor;
-            const tokenPrice = (suiBalance + virtualSuiAmt) / tokenBalance;
-            setMarketCap(suiBalance + virtualSuiAmt);
-            setSuiBalance(suiBalance);
-            setTokenBalance(tokenBalance);
-            setTokenPrice(tokenPrice);
+          // 更新状态
+          const Factor = 1_000_000_000;
+          const suiBalance = Number(fields.sui_balance) / Factor;
+          const tokenBalance = Number(fields.token_balance) / Factor;
+          const virtualSuiAmt = Number(fields.virtual_sui_amt) / Factor;
+          const tokenPrice = (suiBalance + virtualSuiAmt) / tokenBalance;
+          setMarketCap(suiBalance + virtualSuiAmt);
+          const newTradeInfo = {
+            suibalance: suiBalance,
+            tokenbalance: tokenBalance,
+            tokenprice: tokenPrice,
+          };
+          setTradeInfo(newTradeInfo);
 
-            // 保存历史价格数据
-            setPriceHistory(prevHistory => [
-              ...prevHistory,
-              { time: new Date().toLocaleTimeString(), price: tokenPrice }
-            ]);
-        }
-        else {
+
+          // 获取当前历史数据并追加新的价格点
+          setPriceHistory(prevHistory => [
+            ...prevHistory,
+            { time: new Date().toLocaleTimeString(), price: tokenPrice }
+          ]);
+
+        } else {
           alert("未找到该对象的相关信息。");
         }
       } else {
@@ -190,51 +193,8 @@ const TradingApp: React.FC = () => {
       alert("获取代币信息失败，请稍后再试。");
     }
   };
-  // const options = {
-  //   // responsive: true,
-  //   // maintainAspectRatio: true, /* 使图表不保持默认的宽高比 */
-  //   scales: {
-  //     x: {
-  //       title: {
-  //         display: true,
-  //         text: '时间',
-  //       },
-  //     },
-  //     y: {
-  //       title: {
-  //         display: true,
-  //         text: '价格 (SUI)',
-  //       },
-  //       beginAtZero: false,
-  //       suggestedMin: Math.min(...priceHistory.map(entry => entry.price)) * 0.9,
-  //       suggestedMax: Math.max(...priceHistory.map(entry => entry.price)) * 1.1,
-  //     },
-  //   },
-  //   plugins: {
-  //     tooltip: {
-  //       callbacks: {
-  //         label: function(context: TooltipItem<'line'>) {
-  //           const value = context.raw;
-  //           console.log(value);
-  //           return `代币价格 (SUI): ${value}`
-  //         }
-  //       }
-  //     }
-  //   }
-  // };
-  //
-  // const CoinData = {
-  //   labels: priceHistory.map(entry => entry.time),
-  //   datasets: [
-  //     {
-  //       label: '代币价格 (SUI)',
-  //       data: priceHistory.map(entry => entry.price.toExponential(8)),
-  //       fill: false,
-  //       borderColor: 'rgba(75,192,192,1)',
-  //       tension: 0.1,
-  //     },
-  //   ],
-  // };
+
+
   const visibleDataPoints = 10; // 一次显示的点数
   const [sliderValue, setSliderValue] = useState(priceHistory.length - visibleDataPoints);
 
@@ -274,8 +234,7 @@ const TradingApp: React.FC = () => {
       },
     },
   };
-
-  const CoinData = {
+  const CoinData = useMemo(() => ({
     labels: visibleHistory.map((entry) => entry.time),
     datasets: [
       {
@@ -286,7 +245,9 @@ const TradingApp: React.FC = () => {
         tension: 0.1,
       },
     ],
-  };
+  }), [visibleHistory]);
+
+
   //@ts-ignore
   const handleSliderChange = (event) => {
     const newSliderValue = parseInt(event.target.value, 10);
@@ -308,11 +269,8 @@ const TradingApp: React.FC = () => {
   //   }
   // };
 //格式化marketCap
-  const formatMarketCap = (marketCap: number | undefined): string => {
-    if (marketCap === undefined) {
-      // 如果没有获取到值，则返回 "loading"
-      return "loading...";
-    } else if (marketCap >= 1000) {
+  const formatMarketCap = (marketCap: number): string => {
+    if (marketCap >= 1000) {
       // 如果市场资本额大于等于 1000，则转换为千位格式
       return (marketCap / 1000).toFixed(12) + "k";
     } else {
@@ -325,6 +283,7 @@ const TradingApp: React.FC = () => {
 //根据hash获取代币信息
   const fetchTokenInfo = async (tokenHash:string) => {
     try {
+      console.log("fetchTokenInfo");
       if(!tokenHash) {
         console.error("Invalid hash:", tokenHash);
         return;
@@ -383,7 +342,6 @@ const TradingApp: React.FC = () => {
           }
         }
       }
-
       // 已修改————————————————————————————————————————————————————————————————————————————————————————————
       if (!CoinObject) {
         console.error("Invalid coin object hash:", CoinObject);
@@ -434,18 +392,11 @@ const TradingApp: React.FC = () => {
             boudingcurve: bdObjectId.toString(),
           };
           setTokenInfo(tokenInfomatioin);
+          setBoundingCurve(tokenInfomatioin.boudingcurve);
+          setPackageId(tokenInfomatioin.package_id);
+          setTicker(tokenInfomatioin.ticker);
         }
-
-        // const response = await axios.get(
-        //     `http://localhost:8080/api/trade/${tokenHash}`
-        // );
-        // const data = response.data;
-        // setTokenInfo(data);
-        // console.log("tokenInfo:", data);
-
-
       }
-
     } catch (error) {
       console.error("Error fetching token info:", error);
     }
@@ -599,8 +550,8 @@ const TradingApp: React.FC = () => {
                 <label>image(optional)</label>
                 <div className="avatar-container">
                   <label htmlFor="avatar-upload" className="avatar-upload-label">
-                    <img alt="upload" className="avatar-preview" />
-                    <FileUploadWithIcon onAvatarChange={handleAvatarChange} />
+                    <img alt="upload" className="avatar-preview"/>
+                    <FileUploadWithIcon onAvatarChange={handleAvatarChange}/>
                   </label>
                 </div>
               </div>
@@ -636,7 +587,7 @@ const TradingApp: React.FC = () => {
             </button>
           </div>
         </Modal>
-        <Header />
+        <Header/>
         <div className="trade-root">
           <button
               className="trade-back-button"
@@ -644,9 +595,15 @@ const TradingApp: React.FC = () => {
           >
             [go back]
           </button>
-          <div>MarketCap: {formatMarketCap(marketCap)}</div>
-
+          <div>
+            {marketCap && (
+                <div>
+                  <p>MarketCap: {formatMarketCap(marketCap)}</p>
+                </div>
+            )}
+          </div>
           <div className="panel">
+
             <div className="leftPanel">
               {/*<div className="trade-chart">chart</div>*/}
               <div className="chart-container">
@@ -663,94 +620,67 @@ const TradingApp: React.FC = () => {
                   />
                 </div>
               </div>
+
               <div>
-                {/* 展示代币信息 */}
-                {suiBalance !== null && tokenBalance !== null && tokenPrice !== null && (
+                {tradeInfo && (
                     <div>
-                      <p>Blance of Sui in bd: {suiBalance} SUI</p>
-                      <p>Blance of Token in bd: {tokenBalance} Coin</p>
-                      <p>Token Price: {tokenPrice.toFixed(10)} SUI/Coin</p>
+                      <p>Balance of Sui in bd: {tradeInfo.suibalance} SUI</p>
+                      <p>Balance of Token in bd: {tradeInfo.tokenbalance} Coin</p>
+                      <p>Token Price: {tradeInfo.tokenprice.toFixed(10)} SUI/Coin</p>
                     </div>
                 )}
               </div>
-              {/*  /!*<button className="fetch-data-button" onClick={fetchObjectData}>*!/*/}
-              {/*  /!*  查询代币信息*!/*/}
-              {/*  /!*</button>*!/*/}
-
-            {/*<button className="fetch-data-button" onClick={fetchObjectData}>查询代币信息</button>*/}
-            <div className="trends-trades">
-              <button onClick={() => setActiveDiv("Trends")}>Trends</button>
-              <button onClick={() => setActiveDiv("Trades")}>Trades</button>
-              {activeDiv === "Trends" && (
-                  <div className="trends">
-                    <div className="info-item">
-                      <img
-                          src={tokenInfo?.image}
-                          alt="Avatar"
-                          className="avatar"
-                      />
-                      <div className="infocontent">
-                        <div
-                            style={{
-                              color: "white",
-                              fontWeight: "bold",
-                              fontSize: 15,
-                            }}
-                        >
-                          {tokenInfo?.name} (ticker: {tokenInfo?.ticker})
+              <div className="trends-trades">
+                <button onClick={() => setActiveDiv("Trends")}>Trends</button>
+                <button onClick={() => setActiveDiv("Trades")}>Trades</button>
+                {activeDiv === "Trends" && (
+                    <div className="trends">
+                      <div className="info-item">
+                        <img
+                            src={tokenInfo?.image}
+                            alt="Avatar"
+                            className="avatar"
+                        />
+                        <div className="infocontent">
+                          <div
+                              style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                fontSize: 15,
+                              }}
+                          >
+                            {tokenInfo?.name} (ticker: {tokenInfo?.ticker})
+                          </div>
+                          <p className="infoText">{tokenInfo?.description}</p>
                         </div>
-                        <p className="infoText">{tokenInfo?.description}</p>
                       </div>
+                      <button
+                          onClick={() => {
+                            dispatch(openModal("replyModal"));
+                          }}
+                      >
+                        {" "}
+                        Post a reply{" "}
+                      </button>
                     </div>
-
-                    {/*<div>*/}
-                    {/*  {reply_info?.map((event, index) => (*/}
-                    {/*      <div key={index} className="coin-row">*/}
-                    {/*        {event.imageUrl && (*/}
-                    {/*            <div className="coin-image">*/}
-                    {/*              (*/}
-                    {/*              <img*/}
-                    {/*                  src={event.imageUrl}*/}
-                    {/*                  className="rounded-circle"*/}
-                    {/*              />*/}
-                    {/*              )*/}
-                    {/*            </div>*/}
-                    {/*        )}*/}
-                    {/*        <div className="coin-info">*/}
-                    {/*          <div>*/}
-                    {/*            {event.name} {event.content}*/}
-                    {/*          </div>*/}
-                    {/*        </div>*/}
-                    {/*      </div>*/}
-                    {/*  ))}*/}
-                    {/*</div>*/}
-                    <button
-                        onClick={() => {
-                          dispatch(openModal("replyModal"));
-                        }}
-                    >
-                      {" "}
-                      Post a reply{" "}
-                    </button>
-                  </div>
-              )}
-              {activeDiv === "Trades" && (
-                  <div className="trades">
-                    <Tx transaction={transactions} coin={ticker}/>
-                  </div>
-              )}
+                )}
+                {activeDiv === "Trades" && (
+                    <div className="trades">
+                      <Tx transaction={transactions} coin={ticker}/>
+                    </div>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="rightPanel">
-            <div className="tradePanel">
-              <div className="buttonPanel">
-                <button
-                    className={`button ${
-                        buysellDiv === "Buy" ? "buy-active" : "Buybutton"
-                    }`}
-                    onClick={() => {
-                      setBuySell("Buy");
-                      setInputValue("");
+            <div className="rightPanel">
+              <div className="tradePanel">
+                <div className="buttonPanel">
+                  <button
+                      className={`button ${
+                          buysellDiv === "Buy" ? "buy-active" : "Buybutton"
+                      }`}
+                      onClick={() => {
+                        setBuySell("Buy");
+                        setInputValue("");
                         setBuyAndSell(true);
                       }}
                   >
@@ -856,10 +786,10 @@ const TradingApp: React.FC = () => {
               </div>
               <div className="infoPanel">
                 <div className="info-item">
-                  <img src={tokenInfo?.image} alt="Avatar" className="avatar" />
+                  <img src={tokenInfo?.image} alt="Avatar" className="avatar"/>
                   <div className="infocontent">
                     <div
-                        style={{ color: "white", fontWeight: "bold", fontSize: 15 }}
+                        style={{color: "white", fontWeight: "bold", fontSize: 15}}
                     >
                       {tokenInfo?.name} (ticker: {tokenInfo?.ticker})
                     </div>
