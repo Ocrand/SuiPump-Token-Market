@@ -11,9 +11,15 @@ The user connects their wallet -> begins creating a token -> enters information 
 
 ## PS:
 
-The demo project is deployed on Walrus Site: https://6c3c7hcsfwh4fwwouhopdyweeaybmat1gynncu1btrvxiefc2n.walrus.site/. 
+The demo project is deployed on Walrus Site: https://suipump.walrus.site
 
 User-uploaded avatars are also stored on my server's Walrus service via an API. Since both the frontend and backend were developed by myself, there are currently issues with network latency during API communication and bugs with wallet connections. If you encounter problems, please try refreshing the page multiple times. You can also view the demo video. Thank you all for your support!
+
+If you find that information cannot be displayed when visiting the website, it's most likely because my backend server is down. I apologize for the inconvenience. I will keep an eye on the server status at all times😢😢😢
+
+
+
+
 
 DemoVideBlob:bBAbolNOw2thYlJLAoucyoP0l9Brgtcl4p6-BMy7BG4
 
