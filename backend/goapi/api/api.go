@@ -1,23 +1,24 @@
 package main
 
 import (
-	"goapi/SuiPumpfunc"
-	"goapi/SuiUtils"
 	"context"
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/block-vision/sui-go-sdk/models"
-	"github.com/block-vision/sui-go-sdk/signer"
-	"github.com/block-vision/sui-go-sdk/sui"
-	"github.com/block-vision/sui-go-sdk/utils"
-	"github.com/rs/cors"
+	"goapi/SuiPumpfunc"
+	"goapi/SuiUtils"
 	"log"
 	"net/http"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/block-vision/sui-go-sdk/models"
+	"github.com/block-vision/sui-go-sdk/signer"
+	"github.com/block-vision/sui-go-sdk/sui"
+	"github.com/block-vision/sui-go-sdk/utils"
+	"github.com/rs/cors"
 )
 
 type Profile struct {
@@ -64,16 +65,24 @@ func CheckAddress(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//验证address是否存在于数据库中
-	var checkFlag string
+	var checkFlag Profile
 	err = db.QueryRow("SELECT Address FROM WalletProfile WHERE Address = ?", address).Scan(&address)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			checkFlag = "0"
+			checkFlag.Flag = "0"
 		}
 
 	} else {
-		checkFlag = "1"
+		checkFlag.Flag = "1"
+		fmt.Println("address", address)
+		err = db.QueryRow("SELECT Address, Name, Avatar, Bio FROM WalletProfile WHERE Address = ?", address).Scan(&checkFlag.Account, &checkFlag.Name, &checkFlag.Avatar, &checkFlag.Bio)
+		if err != nil {
+			log.Printf("Error querying existing profile: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+		}
+		defer db.Close()
 	}
+	fmt.Println("checkFlag", checkFlag)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(checkFlag)
 }
@@ -100,6 +109,7 @@ func InsertProfileByAddress(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad request: "+err.Error(), http.StatusBadRequest)
 		return
 	} // 检查地址是否已存在
+	fmt.Println("profile", profile)
 
 	// 检查地址是否已存在并获取数据
 	var existingProfile Profile
@@ -128,10 +138,11 @@ func InsertProfileByAddress(w http.ResponseWriter, r *http.Request) {
 		//先检查返回值是否一致
 		if profile.Name != existingProfile.Name || profile.Avatar != existingProfile.Avatar || profile.Bio != existingProfile.Bio {
 			// 数据不一致，更新数据
-			_, err = db.Exec("UPDATE WalletProfile SET Name = ?, Avatar = ?, Bio = ? WHERE Address = ?", profile.Name, profile.Avatar, profile.Bio, profile.Account)
+
 			existingProfile.Name = profile.Name
 			existingProfile.Avatar = profile.Avatar
 			existingProfile.Bio = profile.Bio
+			_, err = db.Exec("UPDATE WalletProfile SET Name = ?, Avatar = ?, Bio = ? WHERE Address = ?", profile.Name, profile.Avatar, profile.Bio, profile.Account)
 			if err != nil {
 				log.Printf("Error updating profile: %v", err)
 				http.Error(w, "Internal server error", http.StatusInternalServerError)

@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: "https://suipump.top", // 替换为实际的 API 基本 URL
-  timeout: 40000,
+  // baseURL: "http://localhost:9001", // 替换为实际的 API 基本 URL
+  baseURL: "https://suipump.top",
+  timeout: 60000,
 });
 
 export const fetchDataWithRetry = async (

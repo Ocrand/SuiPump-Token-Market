@@ -53,7 +53,8 @@ const CreateCoinForm: React.FC = () => {
     }
   }, []);
   // 修改Walurs的api地址
-  const basePublisherUrl = "https://suipump.top";
+  const PublisherUrl = "https://publisher-devnet.walrus.space";
+  const aggregatorUrl = "https://aggregator-devnet.walrus.space";
   // const numEpochs = 1;
   let ImageUrl = "";
   const onSubmit = async (data: any) => {
@@ -61,16 +62,16 @@ const CreateCoinForm: React.FC = () => {
     setSuccess(false);
     // 与walrus的api连接存储blob
     // const PublishUrl = `${basePublisherUrl}/v1/store?epochs=${numEpochs}`;
-    const response = await axiosInstance.put(`/v1/store?epochs=1`, data.image[0]);
+    const response = await axiosInstance.put(`${PublisherUrl}/v1/store?epochs=1`, data.image[0]);
 
     if (response.status === 200) {
       const info = await response.data;
       console.log(info);
       if('alreadyCertified' in info  && 'blobId' in info.alreadyCertified) {
-        ImageUrl = `${basePublisherUrl}/v1/${info.alreadyCertified.blobId}`;
+        ImageUrl = `${aggregatorUrl}/v1/${info.alreadyCertified.blobId}`;
       }
       if('newlyCreated' in info && 'blobObject' in info.newlyCreated && 'blobId' in info.newlyCreated.blobObject) {
-        ImageUrl = `${basePublisherUrl}/v1/${info.newlyCreated.blobObject.blobId}`;
+        ImageUrl = `${aggregatorUrl}/v1/${info.newlyCreated.blobObject.blobId}`;
       }
       // return { info: info, media_type: inputFile.type };
     } else {
@@ -238,14 +239,14 @@ const CreateCoinForm: React.FC = () => {
           )}
         </div>
         <button type="submit" className="submit-button" disabled={loading}>
-          {loading ? "Creating..." : "Create coin"}
+          {loading ? "Creating..." : "Create token"}
         </button>
       </form>
       {errors.root && (
           <div className="error-message">{errors.root.message}</div>
       )}
       {success && (
-          <div className="success-message">Coin created successfully!</div>
+          <div className="success-message">Token created successfully!</div>
       )}
       <div className="cost-info">Cost to deploy: ~1 SUI</div>
     </div>

@@ -53,7 +53,7 @@ const Header: React.FC = () => {
     if (account?.address && connectingWallet) {
       handleOpenModal(connectingWallet, account.address);
     }
-  }, [account]);
+  }, [account, connectingWallet]);
 
   useEffect(() => {
     const storedWalletInfo = localStorage.getItem("walletState");
@@ -93,46 +93,84 @@ const Header: React.FC = () => {
 
 
   const defaultAvatar = "https://aggregator-devnet.walrus.space/v1/2HueBM8zsLmWlyGd9Js5X7oo9UrtaE3CXJltrc27MPk";
+  // const handleOpenModal = async (
+  //     wallet: WalletWithFeatures<Record<string, unknown>>,
+  //     accountAddress: string
+  // ) => {
+  //   try {
+  //     setWalletInfo({
+  //       account: accountAddress,
+  //       avatar: defaultAvatar,
+  //       name: wallet.name,
+  //       bio: "",
+  //     });
+  //     const response = await axiosInstance.post("/api/profile", walletInfo);
+  //     const data = response.data;
+  //     if (data.flag) {
+  //       console.log("Address:", accountAddress);
+  //       const checkres = await axiosInstance.get("/api/checkaddress", {
+  //         params: {
+  //           address: accountAddress,
+  //         },
+  //       });
+  //       const check = checkres.data;
+  //       console.log("Check flag:", check);
+  //       console.log("Wallet Info:", walletInfo);
+  //       if (check == '1') {
+  //         const response = await axiosInstance.post("/api/profile", walletInfo);
+  //         const ExitWalletInfo = response.data;
+  //         console.log("updatedWalletInfo", ExitWalletInfo);
+  //         setWalletInfo(ExitWalletInfo);
+  //         dispatch(setConnectedWallet(ExitWalletInfo));
+  //         dispatch(closeModal());
+  //         console.log("Modal opened:", activeModal);
+  //       }
+  //       if (check == '0') {
+  //         dispatch(openModal("walletInfoModal"));
+  //         console.log("Modal opened:", activeModal);
+  //         console.log("Wallet Info:", walletInfo);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating profile:", error);
+  //   }
+  //   // dispatch(openModal("walletInfoModal"));
+  //   // console.log("Modal opened:", activeModal);
+  //   // console.log("Wallet Info:", walletInfo);
+  // };
   const handleOpenModal = async (
       wallet: WalletWithFeatures<Record<string, unknown>>,
       accountAddress: string
   ) => {
+    try {
+      const initialWalletInfo = {
+        account: accountAddress,
+        avatar: defaultAvatar,
+        name: wallet.name,
+        bio: "",
+      };
+      setWalletInfo(initialWalletInfo);
 
-    setWalletInfo({
-      account: accountAddress,
-      avatar: defaultAvatar,
-      name: wallet.name,
-      bio: "",
-    });
-    // const response = await PostDataWithRetry("/api/profile", walletInfo);
-    // if (response.flag)
-    const address = accountAddress;
-    console.log("Address:", address);
-    const checkres = await axiosInstance.get("/api/checkaddress", {
+      // const response = await axiosInstance.post("/api/profile", initialWalletInfo);
+      // const data = response.data;
+
+      const checkres = await axiosInstance.get("/api/checkaddress", {
         params: {
-          address: address,
-        }
-      }
-    );
-    const check = checkres.data;
-    console.log("Check flag:", check);
-    console.log("Wallet Info:", walletInfo);
-    if (check == '1') {
-      const response = await axiosInstance.post("/api/profile", walletInfo);
-      const updatedWalletInfo = response.data;
-      console.log("updatedWalletInfo", updatedWalletInfo);
-      if (updatedWalletInfo.address != "") {
-        setWalletInfo(updatedWalletInfo);
-        dispatch(setConnectedWallet(updatedWalletInfo));
-        dispatch(closeModal());
-        console.log("Modal opened:", activeModal);
+          address: accountAddress,
+        },
+      });
+      console.log("checkres",checkres);
+      const check = checkres.data.flag;
 
+      if (check === '1') {
+        setWalletInfo(checkres.data);
+        dispatch(setConnectedWallet(checkres.data));
+        dispatch(closeModal());
+      } else if (check === '0') {
+        dispatch(openModal("walletInfoModal"));
       }
-    }
-    if (check == '0') {
-      dispatch(openModal("walletInfoModal"));
-      console.log("Modal opened:", activeModal);
-      console.log("Wallet Info:", walletInfo);
+    } catch (error) {
+      console.error("Error updating profile:", error);
     }
   };
 
@@ -162,14 +200,15 @@ const Header: React.FC = () => {
 
   const handleDisconnect = () => {
     disconnect();
-    dispatch(clearConnectedWallet());
     setWalletInfo({
       account: "",
-      avatar: "",
+      avatar: defaultAvatar,
       name: "",
       bio: "",
     });
+    dispatch(clearConnectedWallet());
     dispatch(closeModal());
+    localStorage.removeItem("walletState");
   };
 
   const renderConnectButton = () => {

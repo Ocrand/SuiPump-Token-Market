@@ -42,7 +42,7 @@ const Terminal: React.FC = () => {
         const response = await axiosInstance.get('/api/get-info/',{
           params: {
             order: order,
-          }
+          },
         })
         const data = response.data;
         localStorage.setItem('cachedData', JSON.stringify(data));

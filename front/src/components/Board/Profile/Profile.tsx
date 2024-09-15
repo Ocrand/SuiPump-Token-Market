@@ -51,7 +51,7 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const now = Date.now();
-  const Minutes = 1 * 60 * 1000;
+  const Minutes = 2 * 60 * 1000;
   const client = new SuiClient({
     url: getFullnodeUrl('testnet'),
   });
@@ -73,11 +73,11 @@ const Profile: React.FC = () => {
 
 
   useEffect(() => {
-    if (activeTab === 'coins created') {
+    if (activeTab === 'Tokens created') {
       fentchCoinCreated(address);
     }
 
-    if (activeTab === 'coins held') {
+    if (activeTab === 'Tokens held') {
       fetchCoinInfo(address);
     }
   }, [activeTab, address]); // 侦听 activeTab 和 address 的变化
@@ -117,7 +117,7 @@ const Profile: React.FC = () => {
 
       const mergedArray = Object.values(balanceIf);
 
-      console.log(mergedArray);
+      console.log("1111",mergedArray);
       // const balanceIf = filteredCoins.map(coin => ({
       //   balance: coin.balance,
       //   coinType: coin.coinType,
@@ -141,15 +141,31 @@ const Profile: React.FC = () => {
               showBalanceChanges: false,
             },
           });
-          // console.log(`Coin ${singleCoinInfo.coinPreviousTransaction} details:`, txnPreviousTransaction);
+          console.log(`Coin ${singleCoinInfo.coinPreviousTransaction} details:`, txnPreviousTransaction);
           //@ts-ignore
           // const Coindigest = txnPreviousTransaction.effects.dependencies[1];
           // console.log("digest", Coindigest);
+          let boundingcruveId = "";
           if (txnPreviousTransaction.effects && txnPreviousTransaction.effects.sharedObjects) {
             if (txnPreviousTransaction.effects.sharedObjects.length !== null) {
-              const boundingcruveId = txnPreviousTransaction.effects.sharedObjects[0].objectId;
-              console.log(boundingcruveId);
+              for(const sharedObject of txnPreviousTransaction.effects.sharedObjects){
+                console.log("sharedObject",sharedObject);
+                const sharedObjectIdtxn = await client.getObject({
+                  //@ts-ignore
+                  id: sharedObject.objectId,
+                  options: { showContent: true,
+                    showPreviousTransaction: true},
+                });
+                console.log('sharedObjectIdtxn:', sharedObjectIdtxn);
 
+                const bondingCurveRegex = /curve::BondingCurve/;
+                // @ts-ignore
+                if (bondingCurveRegex.test(sharedObjectIdtxn.data.content.type)) {
+                  boundingcruveId = sharedObject.objectId;
+
+                }
+              }
+              console.log("bd", boundingcruveId);
               const boundingcruveIdtxn = await client.getObject({
                 id: boundingcruveId,
                 options: { showContent: true },
@@ -166,7 +182,7 @@ const Profile: React.FC = () => {
                     const objects = await client.getOwnedObjects({
                       owner: createrId,
                     });
-                    // console.log('objects:', objects);
+                    console.log('objects:', objects);
 
                     for (const object of objects.data) {
                       const createrIdtxn = await client.getObject({
@@ -207,10 +223,18 @@ const Profile: React.FC = () => {
                         const match = Cointype.match(regex);
 
                         if (match) {
+                          // console.log('match:', match);
                           const type = match[1];
-                          const matchingCoin = mergedArray.find(coin => coin.coinType === type);
-
-                          // console.log('matchingCoin:', matchingCoin);
+                          console.log('type:', type);
+                          const normalizeType = (type: string) => type.replace(/^0x0*/, '0x');
+                          // const matchingCoin = mergedArray.find(coin => coin.coinType === type);
+                          const matchingCoin = mergedArray.find(coin => {
+                            const normalizedCoinType = normalizeType(coin.coinType);
+                            const normalizedType = normalizeType(type);
+                            console.log(`Comparing normalized coinType: ${normalizedCoinType} with normalized type: ${normalizedType}`);
+                            return normalizedCoinType === normalizedType;
+                          });
+                          console.log('matchingCoin:', matchingCoin);
                           detailedCoins.push({
                             digest: tradehash,
                             //@ts-ignore
@@ -350,15 +374,15 @@ const Profile: React.FC = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "coins held":
+      case "Tokens held":
         // return renderCoinsHeld();
         return (
             <div className="coin-Box">
               <div className="coin-header">
-                <div>CoinImage</div>
-                <div>CoinName</div>
-                <div>CoinBalance</div>
-                <div>CoinSymbol</div>
+                <div>TokenImage</div>
+                <div>TokenName</div>
+                <div>TokenBalance</div>
+                <div>TokenSymbol</div>
                 <div>Function</div>
               </div>
               <div>
@@ -410,7 +434,7 @@ const Profile: React.FC = () => {
       //         ))}
       //       </div>
       //   );
-      case "coins created":
+      case "Tokens created":
         return (
             <div className="token-list">
               {coin_created?.map((token, index) => (
@@ -423,7 +447,7 @@ const Profile: React.FC = () => {
                     />
                     <div className="item-content">
                       <div style={{color: "lightblue"}}>
-                        CoinObjectId: {token.createdBy}{" "}
+                        TokenAddress: {token.createdBy}{" "}
                       </div>
                       <div style={{color: "greenyellow"}}>
                         market cap: {formatMarketCap(token.marketCap)}
@@ -431,7 +455,7 @@ const Profile: React.FC = () => {
 
                   {/*<div>replies: {token.replies}</div>*/}
                   <div style={{color: "lightgoldenrodyellow"}}>
-                    Coin Name: {token.name}
+                    Token Name: {token.name}
                   </div>
                   <div className="item-des">
                     {token.ticker}: {token.description}
@@ -471,7 +495,7 @@ const Profile: React.FC = () => {
         </div>
 
         <div className="nav-tabs">
-          {["coins held", "coins created"].map((tab) => (
+          {["Tokens held", "Tokens created"].map((tab) => (
             <button
               key={tab}
               className={`nav-link ${activeTab === tab ? "active" : ""}`}

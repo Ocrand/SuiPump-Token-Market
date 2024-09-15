@@ -268,7 +268,7 @@ const TradingApp: React.FC = () => {
           //@ts-ignore
           label: function (context) {
             const value = context.raw;
-            return `代币价格 (SUI): ${value}`;
+            return `Token Price (SUI): ${value}`;
           },
         },
       },
@@ -279,7 +279,7 @@ const TradingApp: React.FC = () => {
     labels: visibleHistory.map((entry) => entry.time),
     datasets: [
       {
-        label: '代币价格 (SUI)',
+        label: 'Token Price (SUI)',
         data: visibleHistory.map((entry) => entry.price.toExponential(8)),
         fill: false,
         borderColor: 'rgba(75,192,192,1)',
@@ -650,7 +650,7 @@ const TradingApp: React.FC = () => {
             <div className="leftPanel">
               {/*<div className="trade-chart">chart</div>*/}
               <div className="chart-container">
-                <h1>代币价格走势图</h1>
+                <h1>Chart of Token Price</h1>
                 <Line key={visibleHistory.length} data={CoinData} options={options}/>
                 <div>
                   <input
@@ -667,9 +667,9 @@ const TradingApp: React.FC = () => {
                 {/* 展示代币信息 */}
                 {suiBalance !== null && tokenBalance !== null && tokenPrice !== null && (
                     <div>
-                      <p>当前SUI余额: {suiBalance} SUI</p>
-                      <p>当前代币余额: {tokenBalance} Coin</p>
-                      <p>代币实时价格: {tokenPrice.toFixed(10)} SUI/Coin</p>
+                      <p>Blance of Sui in bd: {suiBalance} SUI</p>
+                      <p>Blance of Token in bd: {tokenBalance} Coin</p>
+                      <p>Token Price: {tokenPrice.toFixed(10)} SUI/Coin</p>
                     </div>
                 )}
               </div>
@@ -866,18 +866,18 @@ const TradingApp: React.FC = () => {
                     <p className="infoText">{tokenInfo?.description}</p>
                   </div>
                 </div>
-                <div className="boundingcurve-alert">
-                  when the market cap reaches $60,012 all the liquidity from the
-                  bonding curve will be deposited into Raydium and burned.
-                  progression increases as the price goes up.
-                  <br />
-                  there are 494,077,522 tokens still available for sale in the
-                  bonding curve and there is 11.59 SOL in the bonding curve. king
-                  of the hill progress: 44%
-                </div>
+                {/*<div className="boundingcurve-alert">*/}
+                {/*  when the market cap reaches $60,012 all the liquidity from the*/}
+                {/*  bonding curve will be deposited into Raydium and burned.*/}
+                {/*  progression increases as the price goes up.*/}
+                {/*  <br />*/}
+                {/*  there are 494,077,522 tokens still available for sale in the*/}
+                {/*  bonding curve and there is 11.59 SOL in the bonding curve. king*/}
+                {/*  of the hill progress: 44%*/}
+                {/*</div>*/}
                 <div className="holders-address">
                   <h3>Holder distribution</h3>
-                  <div>loading...</div>
+                  <div></div>
                 </div>
               </div>
             </div>
