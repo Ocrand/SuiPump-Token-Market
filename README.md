@@ -1,4 +1,4 @@
-# SuiPump-Coin-Market
+# SuiPump-Token-Market
 This project was prepared for our team's first participation in a Hackathon. There are still many areas that need improvement, and we sincerely welcome your feedback and suggestions!
 
 Authors: ocrand, long
