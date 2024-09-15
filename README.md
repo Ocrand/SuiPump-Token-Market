@@ -11,10 +11,10 @@ The user connects their wallet -> begins creating a token -> enters information 
 
 The demo project is deployed on Walrus Site: https://6c3c7hcsfwh4fwwouhopdyweeaybmat1gynncu1btrvxiefc2n.walrus.site/. User-uploaded avatars are also stored on my server's Walrus service via an API. Since both the frontend and backend were developed by myself, there are currently issues with network latency during API communication and bugs with wallet connections. If you encounter problems, please try refreshing the page multiple times. You can also view the demo video. Thank you all for your support!
 
-<img src="https://raw.githubusercontent.com/Ocrand/SuiPump-Token-Market/blob/main/image/image1.png" />
+<img src="https://github.com/Ocrand/SuiPump-Token-Market/blob/main/image/image1.png" />
 
-<img src="https://raw.githubusercontent.com/Ocrand/SuiPump-Token-Market/blob/main/image/image2.png" />
+<img src="https://github.com/Ocrand/SuiPump-Token-Market/blob/main/image/image2.png" />
 
-<img src="https://raw.githubusercontent.com/Ocrand/SuiPump-Token-Market/blob/main/image/image3.png" />
+<img src="https://github.com/Ocrand/SuiPump-Token-Market/blob/main/image/image3.png" />
 
-<img src="https://raw.githubusercontent.com/Ocrand/SuiPump-Token-Market/blob/main/image/image4.png" />
+<img src="https://github.com/Ocrand/SuiPump-Token-Market/blob/main/image/image4.png" />
