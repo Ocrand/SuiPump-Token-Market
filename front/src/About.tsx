@@ -11,6 +11,7 @@ const AboutPage: React.FC = () => {
 
   return (
     <div>
+      <p>treesirop</p>
       This is the About Page!
       <button onClick={handleClick}>Go to Contact Page</button>
     </div>
