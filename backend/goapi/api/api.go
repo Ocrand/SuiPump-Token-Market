@@ -226,9 +226,10 @@ func handleCreateCoin(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(reqData)
 	var ctx = context.Background()
 	var cli = sui.NewSuiClient("https://sui-testnet-rpc.publicnode.com")
-	MyCoinObject := "0x000081b8531c02c581fdd8af5f807cab54867f2024213b08274652a17717d250"
+	// 输入你的主账户地址
+	MyCoinObject := "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 	//录入主账户
-	MainAccount, err := signer.NewSignertWithMnemonic("sand usual affair know hunt uphold purpose clean hero destroy urban glory")
+	MainAccount, err := signer.NewSignertWithMnemonic("xxxx")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error creating main account: %v", err), http.StatusInternalServerError)
 		return
