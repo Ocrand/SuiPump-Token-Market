@@ -23,7 +23,7 @@
 
 - 如果您访问网站时发现信息无法显示，很可能是因为我的后端服务器宕机了。对于造成的不便我表示歉意。我会时刻关注服务器状态😢😢😢 
 
-**Demo视频Blob:** `bBAbolNOw2thYlJLAoucyoP0l9Brgtcl4p6-BMy7BG4`
+**Demo视频Blob:** `r3lwCdv6CCAkMCs63Ol2DSeHqNF-Rjan07h8TspOXHs`
 
 <img src="https://github.com/Ocrand/SuiPump-Token-Market/blob/main/image/image1.png" />
 
